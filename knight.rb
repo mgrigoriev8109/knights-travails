@@ -1,21 +1,22 @@
 class Knight
-  attr_accessor :location
+  attr_accessor :location, :shortest_moves_array
 
   def initialize(location)
     @location = location
     @shortest_moves_array = Array.new(100)
   end
-=begin
+
   def knight_moves(location, destination, current_moves_array = [])
+
     if location == destination
       if current_moves_array.length < @shortest_moves_array.length
-        @shortest_moves_array = current_moves_array
+        @shortest_moves_array = []
+        @shortest_moves_array.concat(current_moves_array)
       end
-      @shortest_moves_array
     else
       possible_moves = generate_possible_moves(location)
       possible_moves.each do  |move|
-        unless current_moves_array.includes?(move)
+        unless current_moves_array.include?(move)
           current_moves_array.push(move)
           knight_moves(move, destination, current_moves_array)
         end
@@ -23,7 +24,7 @@ class Knight
     end
     @shortest_moves_array
   end
-=end
+
   def generate_possible_moves(location)
     possible_moves = []
     possible_moves.push([location[0] + 2, location[1] + 1])
@@ -45,4 +46,5 @@ class Knight
 end
 
 first_knight = Knight.new([0,0])
-p first_knight.generate_possible_moves([0,0])
+first_knight.generate_possible_moves([0,0])
+p first_knight.knight_moves([0,0],[8,6])
