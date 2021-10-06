@@ -1,5 +1,5 @@
 class GameBoard
-  8
+
   attr_accessor :gameboard
 
   def initialize(gameboard = [])
@@ -14,10 +14,11 @@ class GameBoard
     @gameboard.each do |space|
       puts space.join(" ")
     end
-end
+  end
 
 end
 
 new_gameboard = GameBoard.new
 new_gameboard.create_gameboard
 new_gameboard.display_gameboard
+p new_gameboard.gameboard[0][0]
