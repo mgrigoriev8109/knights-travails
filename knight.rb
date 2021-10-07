@@ -20,7 +20,7 @@ class Knight
       @shortest_moves_to_destination = moves
     else
       moves += 1
-      
+
       unless moves < @shortest_moves_to_destination
         knight_moves(move, destination, moves)
       end
@@ -42,7 +42,8 @@ def generate_possible_moves(location)
         number <= 8 && number >= 0
       }
     }
-    possible_moves
+    possible_moves.each {|move|
+      Node.new(move, generate_possible_moves(move))}
   end
 
 end
