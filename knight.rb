@@ -1,31 +1,33 @@
+class Node
+  attr_accessor :location, :neighbors, :parent
+  
+  def initialize(location, parent = nil)
+    @location = location
+    @neighbors = []
+    @parent = parent
+  end
+end
+
 class Knight
-  attr_accessor :location, :shortest_moves_array
+  attr_accessor :location, :neighbors, :shortest_moves_array
 
   def initialize(location)
-    @location = location
-    @shortest_moves_array = Array.new(100)
+    @shortest_moves_to_destination = 64
   end
 
-  def knight_moves(location, destination, current_moves_array = [])
-
+  def knight_moves(location, destination, moves)
     if location == destination
-      if current_moves_array.length < @shortest_moves_array.length
-        @shortest_moves_array = []
-        @shortest_moves_array.concat(current_moves_array)
-      end
+      @shortest_moves_to_destination = moves
     else
-      possible_moves = generate_possible_moves(location)
-      possible_moves.each do  |move|
-        unless current_moves_array.include?(move)
-          current_moves_array.push(move)
-          knight_moves(move, destination, current_moves_array)
-        end
+      moves += 1
+      
+      unless moves < @shortest_moves_to_destination
+        knight_moves(move, destination, moves)
       end
     end
-    @shortest_moves_array
   end
 
-  def generate_possible_moves(location)
+def generate_possible_moves(location)
     possible_moves = []
     possible_moves.push([location[0] + 2, location[1] + 1])
     possible_moves.push([location[0] + 2, location[1] - 1])
@@ -45,6 +47,9 @@ class Knight
 
 end
 
+
+
 first_knight = Knight.new([0,0])
 first_knight.generate_possible_moves([0,0])
-p first_knight.knight_moves([0,0],[8,6])
+first_knight.knight_moves([3,3],[0,0])
+p first_knight.shortest_moves_array
