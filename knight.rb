@@ -1,13 +1,11 @@
-class Node
-  attr_accessor :location, :neighbors, :parent, :children, :moves, :parents_array
-  
-  def initialize(location, parent = nil)
-    @location = location
-    @neighbors = generate_neighbors(location)
-    @parent = nil
-    @children = []
-    @parents_array = []
-    @moves = 0
+require_relative "node"
+
+class Knight
+  attr_accessor :location, :neighbors, :shortest_moves_array
+
+  def initialize(location)
+    @shortest_moves_to_destination = 60
+    @shortest_moves_array = []
   end
 
   def generate_neighbors(location)
@@ -27,14 +25,16 @@ class Node
     }
     neighbors
   end
-end
 
-class Knight
-  attr_accessor :location, :neighbors, :shortest_moves_array
-
-  def initialize(location)
-    @shortest_moves_to_destination = 60
-    @shortest_moves_array = []
+  def create_children_tree(current_node)
+    current_node.neighbors = generate_neighbors(current_node.location)
+    current_node.neighbors.each {|neighbor|
+      child = Node.new(neighbor)
+      child.parent = current_node
+      child.moves = current_node.moves + 1
+      child.parents_array.push(current_node.location)
+      current_node.children.push(child)
+    }
   end
 
   def knight_moves(location, destination, current_node)
@@ -56,15 +56,6 @@ class Knight
     end
   end
 
-  def create_children_tree(current_node)
-    current_node.neighbors.each {|neighbor|
-      child = Node.new(neighbor)
-      child.parent = current_node
-      child.moves = current_node.moves + 1
-      child.parents_array.push(current_node.location)
-      current_node.children.push(child)
-    }
-  end
 end
 
 
