@@ -48,7 +48,7 @@ class Knight
       create_children_nodes(root)
       #now we have 1,2 and 2,1 as root.children, and have moved once to get there
       #the current discovered_locations is just root, so we have to iterate through root and check if it's the destination
-      iterate_through_arrays(discovered_locations, queued_locations, shortest_path_locations, destination)
+      check_for_destination(discovered_locations, destination)
       discovered_locations = queued_locations
       queued_locations = []
       level_order_recursive(location, destination, root, discovered_locations, queued_locations, shortest_path_locations)
@@ -56,17 +56,19 @@ class Knight
     shortest_path_locations
   end
 
-  def iterate_through_arrays(discovered_locations, queued_locations, path_locations, destination)
+  def check_for_destination(discovered_locations, destination)
     discovered_locations.each do |node|
       if node.location == destination
         @shortest_moves_array.clear
-        until node.parent == nil
+        until node.parent.nil?
           @shortest_moves_array.push(node)
           node = node.parent
         end
+      else
+        queued_locations.push(node.children)
       end
-      discovered_locations.clear
     end
+    discovered_locations.clear
   end
 
   def knight_moves(location, destination)
