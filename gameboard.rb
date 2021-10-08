@@ -7,7 +7,7 @@ class GameBoard
   end
 
   def create_gameboard
-    @gameboard = Array.new(8, "x"){Array.new(8, "x")}
+    @gameboard = [Array.new(8, "x"){Array.new(8, "x")}]
   end
 
   def display_gameboard

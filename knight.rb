@@ -1,10 +1,10 @@
 class Node
-  attr_accessor :location, :neighbors, :parent, :children
+  attr_accessor :location, :neighbors, :parent, :children, :moves, :parents_array
   
   def initialize(location, parent = nil)
     @location = location
     @neighbors = generate_neighbors(location)
-    @parent = parent
+    @parent = nil
     @children = []
     @parents_array = []
     @moves = 0
@@ -33,34 +33,41 @@ class Knight
   attr_accessor :location, :neighbors, :shortest_moves_array
 
   def initialize(location)
-    @shortest_moves_to_destination = 64
+    @shortest_moves_to_destination = 60
+    @shortest_moves_array = []
   end
 
-  def knight_moves(location, destination)
+  def knight_moves(location, destination, current_node)
     if location == destination
-      @shortest_moves_to_destination = moves
+      @shortest_moves_to_destination = current_node.moves
+      @shortest_moves_array.clear
+      until current_node.parent == nil do 
+        @shortest_moves_array.push(current_node.location)
+        current_node = current_node.parent
+      end
+
     else
-      current_location_node = Node.new(location)
-      create_children_tree(current_location_node)
-      current_location_node.children.each { |child|
-        unless child.moves > @shortest_moves_to_destination || child.parents_array.include?()
-          knight_moves(child.location, destination)
+      create_children_tree(current_node)
+      current_node.children.each do |child|
+        unless child.moves > @shortest_moves_to_destination || child.parents_array.include?(child.location)
+          knight_moves(child.location, destination, child)
         end
-      }
+      end
     end
   end
 
-  def create_children_tree(current_location_node)
-    current_location_node.neighbors.each {|neighbor|
+  def create_children_tree(current_node)
+    current_node.neighbors.each {|neighbor|
       child = Node.new(neighbor)
-      child.parent = current_location_node
-      child.moves = current_location_node.moves + 1
-      child.parents_array.push(root.location)
-      current_location_node.children.push(child)
+      child.parent = current_node
+      child.moves = current_node.moves + 1
+      child.parents_array.push(current_node.location)
+      current_node.children.push(child)
     }
   end
 end
 
 
 first_knight = Knight.new([0,0])
-first_knight.knight_moves([0,0],[1,2])
+first_knight.knight_moves([0,0],[1,2],Node.new([0,0]))
+p first_knight.shortest_moves_array
