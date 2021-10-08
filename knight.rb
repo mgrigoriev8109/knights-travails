@@ -37,7 +37,32 @@ class Knight
     }
   end
 
-  def knight_moves(location, destination, current_node)
+  def knight_moves(location, destination, root = Node.new(location), discovered_locations = [root], queued_locations = [], array_of_values = [])
+    if discovered_locations.empty?
+      shortest_path_locations
+    elsif root.location == destination
+      @shortest_moves_to_destination = shortest_path_locations
+    elsif root.moves < shortest_path_locations.length
+      root.neighbors = generate_neighbors(location)
+      create_children_tree(root)
+      iterate_through_arrays(discovered_locations, queued_locations, shortest_path_locations)
+      discovered_locations = queued_locations
+      queued_locations = []
+      level_order_recursive(location, destination, root, discovered_locations, queued_locations, shortest_path_locations)
+    end
+    shortest_path_locations
+  end
+
+  def iterate_through_arrays(discovered_locations, queued_locations, path_locations)
+    discovered_locations.each do |node|
+      unless node.nil? 
+        queued_locations.push(node.neighbors)
+        path_locations.push(node.location)
+      end
+    end
+  end
+
+  def knight_moves(location, destination)
     if location == destination
       @shortest_moves_to_destination = current_node.moves
       @shortest_moves_array.clear
