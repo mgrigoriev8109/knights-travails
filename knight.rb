@@ -18,7 +18,7 @@ class Knight
     neighbors.push([location[0] + 1, location[1] - 2])
     neighbors.push([location[0] - 1, location[1] + 2])
     neighbors.push([location[0] - 1, location[1] - 2])
-    neighbors.select!{ |neighbor| 
+    neighbors.select!{ |neighbor|
       neighbor.all?{ |number|
         number <= 8 && number >= 0
       }
@@ -26,26 +26,29 @@ class Knight
     neighbors
   end
 
-  def create_children_tree(current_node)
+  def create_children_nodes(current_node)
     current_node.neighbors = generate_neighbors(current_node.location)
     current_node.neighbors.each {|neighbor|
-      child = Node.new(neighbor)
-      child.parent = current_node
-      child.moves = current_node.moves + 1
-      child.parents_array.push(current_node.location)
-      current_node.children.push(child)
+      unless visited_array.include?(neighbor)
+        child = Node.new(neighbor)
+        @visited_array.push(neighbor)
+        child.parent = current_node
+        child.moves = current_node.moves + 1
+        child.parents_array.push(current_node.location)
+        current_node.children.push(child)
+      end
     }
   end
 
   def knight_moves(location, destination, root = Node.new(location), discovered_locations = [root], queued_locations = [], array_of_values = [])
     if discovered_locations.empty?
       shortest_path_locations
-    elsif root.location == destination
-      @shortest_moves_to_destination = shortest_path_locations
-    elsif root.moves < shortest_path_locations.length
+    else 
       root.neighbors = generate_neighbors(location)
-      create_children_tree(root)
-      iterate_through_arrays(discovered_locations, queued_locations, shortest_path_locations)
+      create_children_nodes(root)
+      #now we have 1,2 and 2,1 as root.children, and have moved once to get there
+      #the current discovered_locations is just root, so we have to iterate through root and check if it's the destination
+      iterate_through_arrays(discovered_locations, queued_locations, shortest_path_locations, destination)
       discovered_locations = queued_locations
       queued_locations = []
       level_order_recursive(location, destination, root, discovered_locations, queued_locations, shortest_path_locations)
@@ -53,12 +56,16 @@ class Knight
     shortest_path_locations
   end
 
-  def iterate_through_arrays(discovered_locations, queued_locations, path_locations)
+  def iterate_through_arrays(discovered_locations, queued_locations, path_locations, destination)
     discovered_locations.each do |node|
-      unless node.nil? 
-        queued_locations.push(node.neighbors)
-        path_locations.push(node.location)
+      if node.location == destination
+        @shortest_moves_array.clear
+        until node.parent == nil
+          @shortest_moves_array.push(node)
+          node = node.parent
+        end
       end
+      discovered_locations.clear
     end
   end
 

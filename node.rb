@@ -8,6 +8,7 @@ class Node
       @children = []
       @parents_array = []
       @moves = 0
+      @visited = false
     end
   
   end
