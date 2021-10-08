@@ -6,6 +6,8 @@ class Node
     @neighbors = generate_neighbors(location)
     @parent = parent
     @children = []
+    @parents_array = []
+    @moves = 0
   end
 
   def generate_neighbors(location)
@@ -34,32 +36,31 @@ class Knight
     @shortest_moves_to_destination = 64
   end
 
-  def knight_moves(location, destination, moves, node)
+  def knight_moves(location, destination)
     if location == destination
       @shortest_moves_to_destination = moves
     else
-      moves += 1
-      unless moves < @shortest_moves_to_destination
-        current_location_node = Node.new(location)
-        create_children_tree(generate_possible_moves(location), node)
-        knight_moves(move, destination, moves)
-      end
+      current_location_node = Node.new(location)
+      create_children_tree(current_location_node)
+      current_location_node.children.each { |child|
+        unless child.moves > @shortest_moves_to_destination || child.parents_array.include?()
+          knight_moves(child.location, destination)
+        end
+      }
     end
   end
 
-  def create_children_tree(root, neighbors)
-    neighbors.each {|neighbor|
+  def create_children_tree(current_location_node)
+    current_location_node.neighbors.each {|neighbor|
       child = Node.new(neighbor)
-      child.parent = root
-      root.children.push(child)
+      child.parent = current_location_node
+      child.moves = current_location_node.moves + 1
+      child.parents_array.push(root.location)
+      current_location_node.children.push(child)
     }
   end
 end
 
 
 first_knight = Knight.new([0,0])
-starting_node = Node.new([0,0])
-p starting_node.neighbors
-p starting_node.children
-first_knight.create_children_tree(starting_node, starting_node.neighbors)
-p starting_node.children
+first_knight.knight_moves([0,0],[1,2])
