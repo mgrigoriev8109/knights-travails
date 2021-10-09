@@ -1,12 +1,26 @@
 require_relative "node"
 
 class Knight
-  attr_accessor :visited_array, :shortest_moves_to_destination, :shortest_moves_array
+  attr_accessor :visited_array, :shortest_moves_array
 
   def initialize
-    @shortest_moves_to_destination = 60
     @shortest_moves_array = []
     @visited_array = []
+  end
+
+  def knight_moves(location, destination, discovered_locations = [Node.new(location)], queued_locations = [])
+    if @shortest_moves_array.length > 0
+      @shortest_moves_array
+    else 
+      discovered_locations.each do |discovered_node|
+        create_children_nodes(discovered_node, queued_locations)
+      end
+      check_for_destination(discovered_locations, destination)
+      discovered_locations = queued_locations
+      queued_locations = []
+      knight_moves(location, destination, discovered_locations, queued_locations)
+    end
+    @shortest_moves_array
   end
 
   def generate_neighbors(location)
@@ -24,54 +38,37 @@ class Knight
         number <= 8 && number >= 0
       }
     }
-
+    neighbors
   end
 
-  def create_children_nodes(current_node)
-    
+  def create_children_nodes(current_node, queued_locations)
     current_node.neighbors = generate_neighbors(current_node.location)
     current_node.neighbors.each do |neighbor|
       unless @visited_array.include?(neighbor)
         child = Node.new(neighbor)
         @visited_array.push(neighbor)
         child.parent = current_node
-        child.moves = current_node.moves + 1
-        child.parents_array.push(current_node.location)
-        current_node.children.push(child)
+        queued_locations.push(child)
       end
     end
   end
 
-  def check_for_destination(discovered_locations, destination, queued_locations)
+  def check_for_destination(discovered_locations, destination)
     discovered_locations.each do |node|
       if node.location == destination
-        @shortest_moves_array.clear
         until node.parent.nil?
-          @shortest_moves_array.push(node)
+          @shortest_moves_array.push(node.location)
           node = node.parent
         end
-      else
-        queued_locations.push(node.children)
+        p @shortest_moves_array
       end
     end
     discovered_locations.clear
   end
 
-  def knight_moves(location, destination, root = Node.new(location), discovered_locations = [root], queued_locations = [])
-    if discovered_locations.empty?
-      @shortest_moves_array
-    else 
-      discovered_locations.each do |discovered_node|
-        create_children_nodes(discovered_node)
-      end
-      check_for_destination(discovered_locations, destination, queued_locations)
-      discovered_locations = queued_locations
-      queued_locations = []
-      knight_moves(location, destination, discovered_locations, queued_locations)
-    end
-  end
 end
 
 first_knight = Knight.new
-first_knight.knight_moves([0,0],[3,3])
-p first_knight.shortest_moves_array
+first_knight.knight_moves([7,7],[0,0])
+first_knight.shortest_moves_array
+
