@@ -5,3 +5,5 @@ This was done using an implementation of the Breadth First Search algorithm, whi
 This project required a lot of debugging, and some modifications in my overall approach since initially I ran a Depth First Search that ran either a single recursion, or infinitely.
 
 There are a lot of things that I would like to come back and change in the future - namely the use of an instance variable to store the shortest path, but I've accomplished the goal I set out and will be continuing on to learning Test Driven Development to revisit this project at a later date.
+
+The knight.rb and node.rb files contain the main functionality for the Knight's Travails, whereas the gameboard.rb file was mostly a brainstorming attempt in preperation for creating a functional Chess project in the future.
