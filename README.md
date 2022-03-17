@@ -19,6 +19,6 @@ Clone the repository locally, and run `knight.rb` to see the shortest possible p
 
 This project required a lot of debugging, and some modifications in my overall approach since initially I ran a Depth First Search that ran either a single recursion, or infinitely.
 
-The knight.rb and node.rb files contain the main functionality for the Knight's Travails, whereas the gameboard.rb file was mostly a brainstorming attempt in preperation for creating a functional Chess project in the future.
+The knight.rb and node.rb files contain the main functionality for the Knight's Travails.
 
 
