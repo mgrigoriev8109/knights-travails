@@ -10,6 +10,10 @@ Clone the repository locally, and run `knight.rb` to see the shortest possible p
 
 - The Breadth First Search algorithm was implemented to create a queue.
 - Algorithm recursively searches through a Graph of Vertices using a queue
+- Created using Computer Science knowledge I acquired from previous projects, such as:
+-   [Merge Sort and Recursive Fibonacci](https://github.com/mgrigoriev8109/recursion)
+-   [Linked List recreation](https://github.com/mgrigoriev8109/linked_lists)
+-   [Binary Search Tree](https://github.com/mgrigoriev8109/binary-search-trees).
 
 ## Known Bugs
 
