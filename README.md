@@ -2,10 +2,6 @@
 
 Knight's Travails is a program which finds the shortest path on a chess board for a knight to travel from one point to another. 
 
-## How to play
-
-Clone the repository locally, and run `knight.rb` to see the shortest possible path between the coordinates `[7,7]` and `[0,0]`. Alternatively open up the file and modify knight_moves to see the program work for any set of coordinates. 
-
 ## Features
 
 - The Breadth First Search algorithm was implemented to create a queue.
@@ -17,7 +13,11 @@ Clone the repository locally, and run `knight.rb` to see the shortest possible p
 
 ## Known Bugs
 
-- None
+- No interactive way for a user to play, this was created purely to practice previously learned Computer Science knowledge of algorithms, data structures, and recursion.
+
+## How to use
+
+Clone the repository locally, and run `knight.rb` to see the shortest possible path between the coordinates `[7,7]` and `[0,0]`. Alternatively open up the file and modify knight_moves to see the program work for any set of coordinates. 
 
 ## Reflections
 
